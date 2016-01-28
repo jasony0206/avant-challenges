@@ -65,19 +65,9 @@ public class Factors {
                 }
 
                 if (curNum % other == 0) {
-                    // Use pre-computed result: we already know factors of 'other'
-                    Set<Integer> memoizedFactorSet1 = new HashSet<Integer>(map.get(other));
-                    curFactorsSet.addAll(memoizedFactorSet1);
-                    curFactorsSet.add(other);
-
-                    ArrayList<Integer> memoizedFactorsList2 = map.get(curNum / other);
-                    if (memoizedFactorsList2 != null) {
-                        // Use pre-computed result: we already know factors of 'curNum / other'
-                        // which is also a factor of curNum.
-                        Set<Integer> memoizedFactorSet2 = new HashSet<Integer>(map.get(curNum / other));
-                        curFactorsSet.addAll(memoizedFactorSet2);
-                        curFactorsSet.add(curNum / other);
-                    }
+                    // We already know factors of 'other' and 'curNum / other'.
+                    addMemoizedFactors(map, curFactorsSet, other);
+                    addMemoizedFactors(map, curFactorsSet, curNum / other);
 
                     // 'marker' marks the smallest value of 'curNum / other' so far.
                     // When this number becomes smaller than 'other', we're done working for
@@ -91,5 +81,16 @@ public class Factors {
             map.put(curNum, curFactorsList);
         }
         return map;
+    }
+
+    // Adds factors of 'num' to 'factorSet' by looking at 'map'
+    public static void addMemoizedFactors(Map<Integer, ArrayList<Integer>> map, Set<Integer> factorSet, Integer num) {
+        ArrayList<Integer> memoizedFactorList =  map.get(num);
+        if (memoizedFactorList != null) {
+            Set<Integer> memoizedFactorSet = new HashSet<Integer>(memoizedFactorList);
+            factorSet.addAll(memoizedFactorSet);
+            // the above set doesn't include the number itself, so add it separately.
+            factorSet.add(num);
+        }
     }
 }
