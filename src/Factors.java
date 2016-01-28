@@ -3,13 +3,12 @@ import java.util.*;
 public class Factors {
     public static void main(String[] args) {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for (int i = 1; i < 13; i++) {
+        for (int i = 1; i < 10000; i++) {
             list.add(i);
         }
 
         Map<Integer, ArrayList<Integer>> map = getFactorsDP(list);
         System.out.println(map);
-        System.out.println("should be:\n" + "{1=[], 2=[1], 3=[1], 4=[1, 2], 5=[1], 6=[1, 2, 3], 7=[1], 8=[1, 2, 4], 9=[1, 3], 10=[1, 2, 5], 11=[1], 12=[1, 2, 3, 4, 6]}");
     }
 
     public static Map<Integer, ArrayList<Integer>> getFactors(ArrayList<Integer> inputList) {
@@ -35,9 +34,14 @@ public class Factors {
         for (int i = 0; i < length; i++) {
             Set<Integer> curFactorsSet = new HashSet<Integer>();
             int curNum = inputList.get(i);
+            int smallestCounterpart = Integer.MAX_VALUE;
 
             for (int j = 0; j < i; j++) {
                 int other = inputList.get(j);
+                if (other > smallestCounterpart) {
+                    break;
+                }
+
                 if (curNum % other == 0) {
                     Set<Integer> memoizedFactorSet1 = new HashSet<Integer>(map.get(other));
                     ArrayList<Integer> memoizedFactorsList2 = map.get(curNum / other);
@@ -49,6 +53,7 @@ public class Factors {
                         curFactorsSet.addAll(memoizedFactorSet2);
                         curFactorsSet.add(curNum / other);
                     }
+                    smallestCounterpart = curNum / other;
                 }
             }
 
