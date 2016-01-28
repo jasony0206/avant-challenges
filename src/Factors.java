@@ -3,21 +3,25 @@ import java.util.*;
 public class Factors {
     public static void main(String[] args) {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for (int i = 1; i < 10000; i++) {
+        for (int i = 1; i < 25; i++) {
             list.add(i);
         }
 
-        Map<Integer, ArrayList<Integer>> map = getFactorsDP(list);
+        Map<Integer, ArrayList<Integer>> map = getFactors(list);
         System.out.println(map);
     }
 
+    // Naive implementation of getFactors method. It runs in O(N^2).
     public static Map<Integer, ArrayList<Integer>> getFactors(ArrayList<Integer> inputList) {
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
 
         for (Integer num : inputList) {
             ArrayList<Integer> curFactorsList = new ArrayList<Integer>();
+
+            // For each of other numbers in the array,
+            // if it is a factor, then add to the list of factors for this number.
             for (Integer other : inputList) {
-                if (num % other == 0) {
+                if ((num % other == 0) && (!num.equals(other))) {
                     curFactorsList.add(other);
                 }
             }
