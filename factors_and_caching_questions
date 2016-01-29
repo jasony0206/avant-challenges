@@ -1,0 +1,13 @@
+1. One way to implement the cache for this problem is as follows:
+We can have a file that stores a hash table that maps each int array to the computed result for that particular array. In Java, this hash table would have a structure like:
+Map<List<Integer>, Map<Integer, List<Integer>>>. Writing to and reading from the cache file can be implemented using ObjectOutputStream and ObjectInputStream classes in Java. Before starting the computation for a given input array, we can first perform a search in the hash table - if the table contains an entry for the input, we simply return the corresponding result; otherwise, we do the computation, insert a new entry to the hash table, close the file, and return the result. 
+
+2. The above cache implementation would first perform a disk read to access the cache file. If a matching entry is found in the file, we are done. If not, we must run the algorithm to compute the answer, and write to disk at the end. So in worst case, we are doing 2 disk accesses in addition to the actual computation. 
+
+3. We can sort the array in descending order, and change the following comparison:
+curNum % other == 0
+as follows:
+other % curNum == 0
+effectively checking whether other is a multiple of curNum.
+
+The caching algorithm wouldn't change, since the algorithm described in (1) only relies on the input-answre relationship.  
