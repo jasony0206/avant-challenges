@@ -2,17 +2,15 @@ import java.util.*;
 
 public class Factors {
     public static void main(String[] args) {
-        ArrayList<Integer> list = new ArrayList<Integer>();
-        for (int i = 1; i < 25; i++) {
-            list.add(i);
-        }
+        int[] array = {10, 5, 2, 20};
 
-        Map<Integer, ArrayList<Integer>> map = getFactorsDP(list);
+        Map<Integer, ArrayList<Integer>> map = getFactorsDP(array);
         System.out.println(map);
     }
 
     // Naive implementation of getFactors method. It runs in O(N^2).
-    public static Map<Integer, ArrayList<Integer>> getFactors(ArrayList<Integer> inputList) {
+    public static Map<Integer, ArrayList<Integer>> getFactors(int[] inputArray) {
+        ArrayList<Integer> inputList = arrayToList(inputArray);
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
 
         for (Integer num : inputList) {
@@ -37,7 +35,8 @@ public class Factors {
     // When we are about to process 20, we already know the factors of 2, 5, and 10.
     // We can leverage memoization technique here to reduce time complexity.
     // More details below.
-    public static Map<Integer, ArrayList<Integer>> getFactorsDP(ArrayList<Integer> inputList) {
+    public static Map<Integer, ArrayList<Integer>> getFactorsDP(int[] inputArray) {
+        ArrayList<Integer> inputList = arrayToList(inputArray);
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
 
         // First, sort the input list to reduce the traversal scope for each number:
@@ -84,7 +83,7 @@ public class Factors {
     }
 
     // Adds factors of 'num' to 'factorSet' by looking at 'map'
-    public static void addMemoizedFactors(Map<Integer, ArrayList<Integer>> map, Set<Integer> factorSet, Integer num) {
+    private static void addMemoizedFactors(Map<Integer, ArrayList<Integer>> map, Set<Integer> factorSet, Integer num) {
         ArrayList<Integer> memoizedFactorList =  map.get(num);
         if (memoizedFactorList != null) {
             Set<Integer> memoizedFactorSet = new HashSet<Integer>(memoizedFactorList);
@@ -92,5 +91,13 @@ public class Factors {
             // the above set doesn't include the number itself, so add it separately.
             factorSet.add(num);
         }
+    }
+
+    private static ArrayList<Integer> arrayToList(int[] array) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        for (int i : array) {
+            list.add(i);
+        }
+        return list;
     }
 }
