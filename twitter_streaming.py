@@ -10,11 +10,22 @@ auth.set_access_token(access_token, access_token_secret)
 class TweetStreamListener(tweepy.StreamListener):
     def __init__(self, api=None):
         self.api = api or tweepy.API()
+        # Approx 300000 tweets/min, firehose pulls 1% sample, thus 3000/min
+        # in 5 min, approx 15000 tweets
+        self.max_count = 15000
+        self.count = 0
         self.output = open('tweets.txt', 'w')
 
     def on_status(self, status):
-        text = status.text.encode('utf8')
-        self.output.write(text)
+        if (self.count < self.max_count):
+        	text = status.text.encode('utf8')
+        	self.output.write(text + "\n")
+        	self.count += 1
+        	return True
+        else:
+        	# done collecting tweets, close file and stop listening
+        	self.output.close()
+        	return False
 
 if __name__ == '__main__':
     listner = TweetStreamListener()
