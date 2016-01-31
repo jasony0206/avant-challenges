@@ -34,12 +34,13 @@ if __name__ == '__main__':
     stream = tweepy.streaming.Stream(auth, listner)
     stream.filter(languages=['en'], locations=[-180, -90, 180, 90 ])
     
-    # parse the file into words
+    # process the data
     with open('tweets.txt', 'r') as tweets:
     	tweets_string = tweets.read().replace('\n', '')
     	# normalize by turning all words to lowercase
     	tweets_words = [word.lower() for word in tweets_string.split(' ')]
     	total_word_count = len(tweets_words)
+        print "Total word count:", total_word_count
 
     	stop_words = sw.get_stop_words('english')
     	# change encoding scheme from unicode to utf-8 to match tweets
