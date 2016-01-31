@@ -28,7 +28,12 @@ class TweetStreamListener(tweepy.StreamListener):
         	return False
 
 if __name__ == '__main__':
-    listner = TweetStreamListener()
-    stream = tweepy.streaming.Stream(auth, listner)
-    stream.filter(languages=['en'], locations=[-180, -90, 180, 90 ])
+    # listner = TweetStreamListener()
+    # stream = tweepy.streaming.Stream(auth, listner)
+    # stream.filter(languages=['en'], locations=[-180, -90, 180, 90 ])
     
+    # parse the file into words
+    with open('tweets.txt', 'r') as tweets:
+    	tweets_string = tweets.read().replace('\n', '')
+    	tweets_words = tweets_string.split(' ')
+    	tweets_wordcount = len(tweets_words)
