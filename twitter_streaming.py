@@ -1,4 +1,5 @@
 import tweepy
+import stop_words as sw
 
 access_token = "4856028904-WRZgbA4C2V6kLHKaNNFP4ag75cQc3QMVceySBYy"
 access_token_secret = "yfVs5cwz8TiooQbBeEAJKzAB0Ws4sYVvKvtFtDpoW6f3i"
@@ -37,3 +38,10 @@ if __name__ == '__main__':
     	tweets_string = tweets.read().replace('\n', '')
     	tweets_words = tweets_string.split(' ')
     	tweets_wordcount = len(tweets_words)
+
+    	stop_words = sw.get_stop_words('english')
+    	# change encoding scheme from unicode to utf-8 to match tweets
+    	stop_words = [stop_word.encode('utf-8') for stop_word in stop_words]
+    	
+    	# filter out stop words
+    	tweets_words = [word for word in tweets_words if word not in stop_words]
